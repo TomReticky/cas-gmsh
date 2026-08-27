@@ -1,0 +1,41 @@
+Mesh je standardně generovaná pomocí gmsh. Já jsem používal python api, takže je nutné mít gmsh
+nainstalovaný pomocí pip.
+
+Mesh je pak pomocí NekMesh převedena do xml formátu:
+NekMesh mesh.msh mesh.xml
+
+Aby mesh dále fungovala s projectcad, je potřeba:
+    - mít všechny 2D a 3D elementy přiděleny k physical group
+    - step file a mesh musí být ve stejných jednotkách, a to metrech
+    (mělo by to fungovat v jakýhkoliv jednotkách, ale projectcad u mě vždy step file převedl na metry, a poté projekce nefungovala)
+    - step file musí být bez periodických povrchů a křivek
+    - opencascade má hard kódovaný limit přesnosti 1e-7, pokud máme elementy menší než tuto velikost,
+    je nutné cad uměle zvětšit, vygenerovat kolem něho zvětšenou síť, udělat projekci, a poté mesh
+    zase zmenšit: NekMesh scale:scaleX:x:scaleY:x:scaleZ:x input.xml output.xml
+
+projectcad poté potřebuje tuto lineární mesh a step file cad modelu. Tento cad nemusí být identický s tím,
+který jsme používaly ke generování lineární meshe, například můžeme použít pouze cad kter7 pokrývá pouze část výpočetní domény.
+
+projectcad se používá následovně:
+Nekmesh -m projectcad:file=filename.step:order=x mesh.xml ho.xml -v
+
+kde filename.step je název step file a x je požadový řád aproximace zakřivení. Užitečným parametrem je také cLength,
+kterým se násobí tolerance, kterou projectcad používá. Menší tolerance násobně zvyšují výpočetní náročnost operace.
+
+I když jde projectcad paralelizovat pomocí mpi, nejvíce výpočetně náročná operace je generovaní bouding boxů kolem povrchů cadu,
+a to paralelizovat nelze. Paralelizace tak akorát vede k násobné spotřebě RAM.
+
+projectcad si může v logu stěžovat, že ne všech bounding boxech našel křivky, či že ne všechny edge a faces mají CADObject.
+
+[ProcessProjectCAD] WARNING: Vertices No CAD (Includes PlanarSurf) N= 0
+[ProcessProjectCAD] WARNING: Edges without CADObject               N= 90138
+[ProcessProjectCAD] WARNING: Faces without CADObject               N= 63745
+
+To nutně neznamená že se projekce nepovedla. Vypozoroval jsem, že pokud mají všechny vertices svůj CAD, tak se projekce
+pravděpodobně povedla. To je však nutné definitivně zkontrolovat až v paraview.
+
+Kontrola a extrakce negativních jakobiánů:
+NekMesh -m jac:extract input.xml output.xml
+
+Převedení do formátu vtu pro paraview, x je kolikrát se zakřivená část sampluje:
+FielConvert -n x input.xml output.vtu

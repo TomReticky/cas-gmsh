@@ -1,0 +1,15 @@
+Geometrie:
+- dx, dy, dz jsou velikosti výpočetní domény
+- cx je vdálenost středu sondy od inlet
+
+Definice physical groups jak pro sondu, tak inverzní doménu je v kódu.
+
+Každá část sodny má svoji vlastní maximální velikost meshe, se zvušují vzáleností od daného elemntu se tato velikost lineárně zvětšuje,
+kontrolováno pomocí proměné growth_rate. Nakonec se vezme minimum z těchto funkcí pro daný prostor pro finální velikost meshe.
+
+Postup:
+python3 mesh_sonda.py
+NekMesh mesh.msh mesh.xml
+NekMesh -m projectcad:file=sonda.step:order=x:cLength=100 mesh.xml ho.xml
+NekMesh -m jac:extract ho.xml negjac.xml # kontrola negativních jakobiánů
+NekMesh -m scale:scaleX=0.001:scaleY=0.001:scaleZ=0.001 ho.xml final.xml # zmenšení meshe na původní velikost

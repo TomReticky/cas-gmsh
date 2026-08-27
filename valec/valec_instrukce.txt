@@ -1,0 +1,20 @@
+Geometrie:
+- dx, dy, dz jsou velikosti výpočetní domény
+- cx je vdálenost středu válce od x=0
+- R je poloměr válce, h je výška válce,
+- r je poloměr zaoblení vrchní strany válce
+
+Velikosti meshe:
+size_domain = velikost meshe v doméně
+size_body = velikosto v blízkosti válce
+size_bnd = velikost v blízkosti bnd layers
+size_wake = velikost v prostoru za válcem, končí na konci domény
+dist_min_*, dist_max_* = kontrolují přechody velikosti meshe
+
+Definice physical groups je v kódu.
+
+Postup:
+NekMesh mesh.msh mesh.xml
+NekMesh -m projectcad:file=domain.step:order=x mesh.xml ho.xml
+NekMesh -m jac ho.xml output.xml # kontrola negativních jacobians
+
