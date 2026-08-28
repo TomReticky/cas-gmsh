@@ -20,7 +20,7 @@ dz = 30
 cx = 5
 
 # mesh sizes
-base_size = 0.8
+base_size = 0.6
 supports_size = 0.12
 ends_size = 0.003
 wire_size = 0.001
