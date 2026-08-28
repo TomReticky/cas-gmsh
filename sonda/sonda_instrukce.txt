@@ -2,7 +2,7 @@ Geometrie:
 - dx, dy, dz jsou velikosti výpočetní domény
 - cx je vdálenost středu sondy od inlet
 
-Definice physical groups jak pro sondu, tak inverzní doménu je v kódu.
+Definice physical groups jak pro sondu, tak inverzní doménu je v kódu, a to jak pro povchy tak objemy.
 
 Každá část sodny má svoji vlastní maximální velikost meshe, se zvušují vzáleností od daného elemntu se tato velikost lineárně zvětšuje,
 kontrolováno pomocí proměné growth_rate. Nakonec se vezme minimum z těchto funkcí pro daný prostor pro finální velikost meshe.

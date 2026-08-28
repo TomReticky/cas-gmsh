@@ -26,14 +26,6 @@ ends_size = 0.003
 wire_size = 0.001
 domain_size = 0.8
 
-# transition distances
-# trans_dist1 = D3
-# trans_dist2 = 2*D4
-# trans_dist_dom1 = D5
-# trans_dist_dom2 = 8*D4
-# trans_dist_dom3 = 200*D2
-# trans_dist_dom4 = 400*D1
-
 growth_rate = 0.15
 
 gmsh.initialize()

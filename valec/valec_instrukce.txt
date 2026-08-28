@@ -16,5 +16,5 @@ Definice physical groups je v kódu.
 Postup:
 NekMesh mesh.msh mesh.xml
 NekMesh -m projectcad:file=domain.step:order=x mesh.xml ho.xml
-NekMesh -m jac ho.xml output.xml # kontrola negativních jacobians
+NekMesh -m jac ho.xml output.xml # kontrola negativních jakobiánů
 
